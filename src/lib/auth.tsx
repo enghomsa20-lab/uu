@@ -41,11 +41,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     let mounted = true;
     (async () => {
-      const { data } = await supabase.auth.getSession();
-      if (!mounted) return;
-      setSession(data.session);
-      await loadDoctor(data.session);
-      setReady(true);
+      try {
+        const { data } = await supabase.auth.getSession();
+        if (!mounted) return;
+        setSession(data.session);
+        await loadDoctor(data.session);
+      } catch {
+        if (mounted) setSession(null);
+      } finally {
+        if (mounted) setReady(true);
+      }
     })();
 
     const { data: sub } = supabase.auth.onAuthStateChange((_event, sess) => {
