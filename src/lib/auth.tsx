@@ -121,5 +121,8 @@ function translateError(msg: string): string {
   if (m.includes('user already registered')) return 'هذا البريد مسجّل مسبقًا.';
   if (m.includes('password should be at least')) return 'كلمة المرور يجب أن تكون 6 أحرف على الأقل.';
   if (m.includes('unable to validate email')) return 'صيغة البريد الإلكتروني غير صحيحة.';
+  if (m.includes('email rate limit exceeded') || m.includes('rate limit exceeded')) {
+    return 'تم تجاوز حد إرسال رسائل البريد الإلكتروني. انتظر قليلًا ثم حاول مرة أخرى، أو سجّل الدخول إذا كان الحساب موجودًا.';
+  }
   return msg;
 }

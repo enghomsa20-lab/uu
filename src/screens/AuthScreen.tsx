@@ -22,9 +22,12 @@ export default function AuthScreen() {
       if (fullName.trim().length < 3) return toast.push('error', 'الرجاء إدخال الاسم الكامل.');
       if (password.length < 6) return toast.push('error', 'كلمة المرور 6 أحرف على الأقل.');
       const { error } = await signUp(fullName.trim(), department.trim(), email.trim(), password);
-      if (error) toast.push('error', error);
-      else toast.push('success', 'تم إنشاء الحساب. يمكنك تسجيل الدخول الآن.');
-      setMode('login');
+      if (error) {
+        toast.push('error', error);
+      } else {
+        toast.push('success', 'تم إنشاء الحساب. يمكنك تسجيل الدخول الآن.');
+        setMode('login');
+      }
     }
   }
 
