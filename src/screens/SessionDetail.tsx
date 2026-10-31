@@ -31,7 +31,7 @@ export default function SessionDetail() {
     if (!id) return;
     const { data, error } = await supabase.from('sessions').select('*').eq('id', id).maybeSingle();
     if (error || !data) {
-      toast.push('error', 'تعذّر تحميل الجلسة.');
+      toast.push('error', error?.message || 'تعذّر تحميل الجلسة.');
       navigate('/sessions');
       return;
     }
@@ -64,8 +64,8 @@ export default function SessionDetail() {
   const rotateToken = useCallback(async () => {
     if (!session || session.status !== 'active') return;
     const { data, error } = await supabase.rpc('rotate_session_token', { p_session_id: session.id });
-    if (error || !data) {
-      toast.push('error', 'تعذّر توليد رمز جديد.');
+    if (error || typeof data !== 'string' || data.length === 0) {
+      toast.push('error', error?.message || 'تعذّر توليد رمز جديد. حاول إعادة تشغيل الجلسة.');
       return;
     }
     const token = data as string;
